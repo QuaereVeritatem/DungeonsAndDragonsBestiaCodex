@@ -61,7 +61,8 @@ class MonsterDetailViewController: UIViewController {
       }
       let spaces = "          "
       // index 1 aboleth crashes here
-      let attributes: String = "\(monster!.type)" + spaces + spaces + "\(monster!.size)  \r" + "Speed: \(monster!.speed)" + "\r" + "Alignment:  \(monster!.alignment) " + "       " + "Armor Class: \(monster!.armorClass) \r" + "Hit Points: \(monster!.hitPoints)         " + "      Challenge Rating: \(monster!.challengeRating) \r \r" + "Strength: \(monster!.strength)" + spaces + "Dex: \(monster!.dexterity)" + spaces + "Const: \(monster!.constitution) \r" + "Int: \(monster!.intelligence)" + spaces + "Wis: \(monster!.wisdom)" + spaces + "Cha: \(monster!.charisma!) \r"
+      let attributes: String = "\(monster!.type)" + spaces + spaces + "\(monster!.size)  \r" + "Speed: \(monster!.speed)" + "\r" + "Alignment:  \(monster!.alignment) " + "       " + "Armor Class: \(monster!.armorClass) \r" + "Hit Points: \(monster!.hitPoints)         " + "      Challenge Rating: \(monster!.challengeRating) \r \r" + "Strength: \(monster!.strength)" + spaces + "Dex: \(monster!.dexterity)" + spaces + "Const: \(monster!.constitution) \r" + "Int: \(monster!.intelligence)" + spaces + "Wis: \(monster!.wisdom)" + spaces
+      // + "Cha: \(monster!.charisma) \r"
       attributesTextField.text! = attributes
       
       // dont forget to add "if legendary_actions != nil" so we can add those too
@@ -92,7 +93,7 @@ class MonsterDetailViewController: UIViewController {
     }
     
   // MARK ** TableView functions
-  
+ /*
   func numberOfSections(in tableView: UITableView) -> Int {
     return 1
   }
@@ -125,7 +126,7 @@ class MonsterDetailViewController: UIViewController {
     
     // self.performSegue(withIdentifier: "class2ClassDetail", sender: self) //not here, unwind from btn function
   }
-  
+  */
     /*
     // MARK: - Navigation
 

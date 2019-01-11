@@ -26,11 +26,13 @@ struct MonsterModel: Codable {
   let intelligence: Int
   let wisdom: Int
   let charisma: Int?
+  let intelligenceSave: Int?
   let dexteritySave: Int?
   let constitutionSave: Int?
   let wisdomSave: Int?
   let charismaSave: Int?
   let insight: Int?
+  let history: Int?
   let perception: Int?
   let persuasion: Int?
   let stealth: Int?
@@ -42,10 +44,11 @@ struct MonsterModel: Codable {
   let languages: String
   let challengeRating: Float64 // goes up to 30.. so far(Terasque)
   let specialAbilities: [SpecialAbilities]?
+  let legendaryActions: [LegendaryActions]?
   let actions:[Actions]?
   let url: String
   
-  init(id: String, index: Int, name: String ,size: String ,type: String, subtype: String, alignment: String, armorClass: Int, hitPoints: Int, hitDice: String, speed: String, strength: Int, dexterity: Int, constitution: Int, intelligence: Int, wisdom: Int, charisma: Int?, dexteritySave: Int?, constitutionSave: Int?, wisdomSave: Int?, charismaSave: Int?, insight: Int?, perception: Int?, persuasion: Int?, stealth: Int?, damageVulnerabilities: String?, damageResistances: String?, damageImmunities: String?, conditionImmunities: String?, senses: String, languages: String, challengeRating: Float64, specialAbilities: [SpecialAbilities]?, actions:[Actions]?, url: String){
+  init(id: String, index: Int, name: String ,size: String ,type: String, subtype: String, alignment: String, armorClass: Int, hitPoints: Int, hitDice: String, speed: String, strength: Int, dexterity: Int, constitution: Int, intelligence: Int, wisdom: Int, charisma: Int?, intelligenceSave: Int?, dexteritySave: Int?, constitutionSave: Int?, wisdomSave: Int?, charismaSave: Int?, insight: Int?, history: Int?, perception: Int?, persuasion: Int?, stealth: Int?, damageVulnerabilities: String?, damageResistances: String?, damageImmunities: String?, conditionImmunities: String?, senses: String, languages: String, challengeRating: Float64, specialAbilities: [SpecialAbilities]?, legendaryActions: [LegendaryActions]?, actions:[Actions]?, url: String){
   self.id = id
   self.index = index
   self.name = name
@@ -63,11 +66,13 @@ struct MonsterModel: Codable {
   self.intelligence = intelligence
   self.wisdom = wisdom
   self.charisma = charisma
+  self.intelligenceSave = intelligenceSave
   self.dexteritySave = dexteritySave
   self.constitutionSave = constitutionSave
   self.wisdomSave = wisdomSave
   self.charismaSave = charismaSave
   self.insight = insight
+  self.history = history
   self.perception = perception
   self.persuasion = persuasion
   self.stealth = stealth
@@ -79,6 +84,7 @@ struct MonsterModel: Codable {
   self.languages = languages
   self.challengeRating = challengeRating
   self.specialAbilities = specialAbilities
+  self.legendaryActions = legendaryActions
   self.actions = actions
   self.url = url
   }
@@ -100,11 +106,13 @@ struct MonsterModel: Codable {
     case intelligence = "intelligence"
     case wisdom = "wisdom"
     case charisma = "charisma"
+    case intelligenceSave = "intelligence_save"
     case dexteritySave = "dexterity_save"
     case constitutionSave = "constitution_save"
     case wisdomSave = "wisdom_save"
     case charismaSave = "charisma_save"
     case insight = "insight"
+    case history = "history"
     case perception = "perception"
     case persuasion = "persuasion"
     case stealth = "stealth"
@@ -116,6 +124,7 @@ struct MonsterModel: Codable {
     case languages = "languages"
     case challengeRating = "challenge_rating"
     case specialAbilities = "special_abilities"
+    case legendaryActions = "legendary_actions"
     case actions = "actions"
     case url = "url"
   }
@@ -163,6 +172,23 @@ struct Actions: Codable {
   }
 }
 
+struct LegendaryActions: Codable {
+  let attackBonus: Int
+  let desc: String
+  let name: String
+  
+  init(attackBonus: Int, desc: String, name: String){
+    self.attackBonus = attackBonus
+    self.desc = desc
+    self.name = name
+  }
+  
+  enum CodingKeys: String, CodingKey{
+    case attackBonus = "attack_bonus"
+    case desc = "desc"
+    case name = "name"
+  }
+}
 
 
 

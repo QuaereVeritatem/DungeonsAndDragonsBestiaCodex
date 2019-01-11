@@ -7,7 +7,7 @@
 //
 // This app is designed to show all monsters and their info from the D&D API
 // todo: 1) error handling for monsterdetailviewcontroller textfields 3) loading icon (for when downloading JSON)
-//       4) it crashes on monster Aboleth {#1}  5) it takes a long time to initially load the monster table 
+//         4) it takes a long time to initially load the monster table 5) monsters 1-37 not shown
 
 import UIKit
 import CoreData
@@ -26,6 +26,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
   let mygroup = DispatchGroup()
   var activityIndicator = UIActivityIndicatorView()
   var monsters: [MonsterModel] = [MonsterModel]()
+  var monsterResults: MonsterResultsModel?
   var monstersSavedOnDisk: [NSManagedObject] = []
   var monsterCount: Int?
   var finalMonsterCount = 10
@@ -68,7 +69,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
   var challengeRatingArray27: [MonsterModel] = [MonsterModel]()
   var challengeRatingArray28: [MonsterModel] = [MonsterModel]()
   var challengeRatingArray29: [MonsterModel] = [MonsterModel]()
-  var challengeRatingArray30: [MonsterModel] = [MonsterModel]()
+  var challengeRatingArray30: [MonsterModel] = [MonsterModel]() 
   
   override func viewDidLoad() {
    // getData()
@@ -79,8 +80,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     collectionView.delegate = self
     
     // still need to setup saveData()
-    if getDataSuccedded == false {
-      monsterCount = urlRequestAndParseForTotal()
+    // if getDataSuccedded == false {
+     // monsterCount = urlRequestAndParseForTotal()
       // find a way to make this loop based on monster count
       for loop in 0...324 {
         cellJSONPull(cellNumber: loop)
@@ -88,8 +89,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
           $0.index < $1.index
         }
       }
-    }
-    
+    // }
     self.tableView.reloadData()
     self.collectionView.reloadData()
   }
@@ -101,11 +101,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    var count = monsterCount!
-    if (count == 325) {
+    var count = 6
+    if (monsters.count < 325 - 300) {
       return count
     } else {
-      count = finalMonsterCount
+      count = monsters.count
     }
     return count
     }
@@ -114,7 +114,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "monsterCell") as! MonsterTableViewCell
     
-    if indexPath.row > 12 ||  challengeRatingArrayCount == 325 {
+    if monsters.count < 100 {
+       //do nothing, json hasnt loaded yet
+    } else {
+     // print("at index # \(indexPath.row) is monster \(String(monsters[indexPath.row].index))")
       cell.indexNum.text! = String(monsters[indexPath.row].index)
       cell.monsterName.text! = monsters[indexPath.row].name
       cell.armorClassNum.text! = String(monsters[indexPath.row].armorClass)
@@ -149,11 +152,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     let cell = tableView.dequeueReusableCell(withIdentifier: "monsterCell") as! MonsterTableViewCell
     let selectedCell = indexPath.row
     // not working !!!!
+    /*
     if monsters[selectedCell].type == "dragon" {
       cell.monsterIcon.image = UIImage(named: "DragonHighlightedIcon")
     } else {
       cell.monsterIcon.image = UIImage(named: "WolfHighlightedIcon")
-    }
+    } */
     chosenDetailMonster = monsters[selectedCell]
     self.performSegue(withIdentifier: "view2Monster", sender: self)
   }
@@ -271,9 +275,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let monsterRes = endPointData
         count = monsterRes.count
         self.finalMonsterCount = count
-        print("The count is \(count)")
+        //print("The count is \(count)")
         //self.monsterCount = count
-        print(endPointData)
+        //print(endPointData)
         print("The Total monster count is \(count)")
         //Get back to the main queue
         DispatchQueue.main.async {
@@ -289,8 +293,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
   // we'll call this for each row (we must send in the index number {indexPath.row} and output is
   // ** THE problems come from here
   func cellJSONPull(cellNumber: Int) {
-    let indexNum = cellNumber + 1
-    let urlString = BaseUrl + "\(indexNum)"  // 1st position is 0 but 1st monster index is 1
+    let index2Num = cellNumber + 1
+    let urlString = BaseUrl + "\(index2Num)"  // 1st position is 0 but 1st monster index is 1
     //print("The wesbite is \(urlString)")
     guard let url = URL(string: urlString) else { return  }
     URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -305,13 +309,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         print(endPointData)
         print("     *********************************************************************************     ")
         self.monsters.append(endPointData)
+        print("Monster count currently is \(self.monsters.count)")
         // add to challenge Rating here
         self.assignChallengeRating(monster: endPointData)
         // save to core data (this is a loop so only most recent)      **** this is where the PROBLEMS ARE *****
         // self.saveData(aMonster: endPointData) gave weird UI on background thread err messg
         //Get back to the main queue
         DispatchQueue.main.async {
-          self.tableView?.reloadData()
+          self.tableView!.reloadData()
           // indicator may need to go here instead
           // saving the monsters to CoreData
 //   self.saveData(aMonster: endPointData)
