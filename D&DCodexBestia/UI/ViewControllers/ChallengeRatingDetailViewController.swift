@@ -45,7 +45,7 @@ class ChallengeRatingDetailViewController: UIViewController, UITableViewDelegate
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "challengeCell") as! ChallengeRatingTableViewCell
     
-      cell.indexNum.text! = String(challengeRatingArray[indexPath.row].index)
+      cell.indexNum.text! = String(challengeRatingArray[indexPath.row].alignment)
       cell.monsterName.text! = challengeRatingArray[indexPath.row].name
       cell.armorClassNum.text! = String(challengeRatingArray[indexPath.row].armorClass)
       cell.monsterType.text! = challengeRatingArray[indexPath.row].type

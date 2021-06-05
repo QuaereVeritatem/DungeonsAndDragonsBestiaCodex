@@ -9,17 +9,18 @@
 import Foundation
 
 struct MonsterModel: Codable {
-  let id: String
-  let index: Int
+ // let id: String
+  let index: String
   let name: String
   let size: String
   let type: String
-  let subtype: String
+  //? new
+  let subtype: String?
   let alignment: String
   let armorClass: Int
   let hitPoints: Int
   let hitDice: String
-  let speed: String
+  let speed: Speed?
   let strength: Int
   let dexterity: Int
   let constitution: Int
@@ -36,11 +37,11 @@ struct MonsterModel: Codable {
   let perception: Int?
   let persuasion: Int?
   let stealth: Int?
-  let damageVulnerabilities: String?
-  let damageResistances: String?
-  let damageImmunities: String?
-  let conditionImmunities: String?
-  let senses: String
+  let damageVulnerabilities: [String]
+  let damageResistances: [String]
+  let damageImmunities: [String]
+  let conditionImmunities: [ConditionImmunities]?
+  let senses: Senses?
   let languages: String
   let challengeRating: Float64 // goes up to 30.. so far(Terasque)
   let specialAbilities: [SpecialAbilities]?
@@ -48,8 +49,10 @@ struct MonsterModel: Codable {
   let actions:[Actions]?
   let url: String
   
-  init(id: String, index: Int, name: String ,size: String ,type: String, subtype: String, alignment: String, armorClass: Int, hitPoints: Int, hitDice: String, speed: String, strength: Int, dexterity: Int, constitution: Int, intelligence: Int, wisdom: Int, charisma: Int?, intelligenceSave: Int?, dexteritySave: Int?, constitutionSave: Int?, wisdomSave: Int?, charismaSave: Int?, insight: Int?, history: Int?, perception: Int?, persuasion: Int?, stealth: Int?, damageVulnerabilities: String?, damageResistances: String?, damageImmunities: String?, conditionImmunities: String?, senses: String, languages: String, challengeRating: Float64, specialAbilities: [SpecialAbilities]?, legendaryActions: [LegendaryActions]?, actions:[Actions]?, url: String){
-  self.id = id
+  init(
+    //id: String,
+    index: String, name: String ,size: String ,type: String, subtype: String?, alignment: String, armorClass: Int, hitPoints: Int, hitDice: String, speed: Speed?, strength: Int, dexterity: Int, constitution: Int, intelligence: Int, wisdom: Int, charisma: Int?, intelligenceSave: Int?, dexteritySave: Int?, constitutionSave: Int?, wisdomSave: Int?, charismaSave: Int?, insight: Int?, history: Int?, perception: Int?, persuasion: Int?, stealth: Int?, damageVulnerabilities: [String], damageResistances: [String], damageImmunities: [String], conditionImmunities: [ConditionImmunities]?, senses: Senses?, languages: String, challengeRating: Float64, specialAbilities: [SpecialAbilities]?, legendaryActions: [LegendaryActions]?, actions:[Actions]?, url: String){
+ // self.id = id
   self.index = index
   self.name = name
   self.size = size
@@ -89,7 +92,7 @@ struct MonsterModel: Codable {
   self.url = url
   }
   enum CodingKeys: String, CodingKey{
-    case id = "_id"
+ //   case id = "_id"
     case index = "index"
     case name = "name"
     case size = "size"
@@ -130,12 +133,60 @@ struct MonsterModel: Codable {
   }
 }
 
+struct Speed: Codable{
+  let walk: String?
+  let swim: String?
+
+  init(walk: String?, swim: String?) {
+    self.walk = walk
+    self.swim = swim
+  }
+
+  enum CodingKeys: String, CodingKey {
+    case walk = "walk"
+    case swim = "swim"
+  }
+}
+
+struct ConditionImmunities: Codable {
+  let index: String?
+  let name: String?
+  let url: String?
+  
+  init(index: String?, name: String?, url: String?){
+    self.index = index
+    self.name = name
+    self.url = url
+  }
+  
+  enum CodingKeys: String, CodingKey {
+    case index = "index"
+    case name = "name"
+    case url = "url"
+  }
+}
+
+struct Senses: Codable {
+  let darkVision: String?
+  let passivePerception: Int?
+
+  init(darkVision: String?, passivePerception: Int?) {
+    self.darkVision = darkVision
+    self.passivePerception = passivePerception
+  }
+  
+  enum CodingKeys: String, CodingKey {
+    case darkVision = "darkvision"
+    case passivePerception = "passive_perception"
+  }
+}
+
 struct SpecialAbilities: Codable {
-  let attackBonus: Int
+  let attackBonus: Int?
   let desc: String
   let name: String
   
-  init(attackBonus: Int, desc: String, name: String) {
+  init(attackBonus: Int?, desc: String, name: String) {
     self.attackBonus = attackBonus
     self.desc = desc
     self.name = name
@@ -149,13 +200,13 @@ struct SpecialAbilities: Codable {
 }
 
 struct Actions: Codable {
-  let attackBonus: Int
+  let attackBonus: Int?
   let desc: String
   let name: String
   let damageBonus: Int?
   let damageDice: String?
   
-  init(attackBonus: Int, desc: String, name: String, damageBonus: Int?, damageDice: String?){
+  init(attackBonus: Int?, desc: String, name: String, damageBonus: Int?, damageDice: String?){
     self.attackBonus = attackBonus
     self.desc = desc
     self.name = name
@@ -173,11 +224,11 @@ struct Actions: Codable {
 }
 
 struct LegendaryActions: Codable {
-  let attackBonus: Int
+  let attackBonus: Int?
   let desc: String
   let name: String
   
-  init(attackBonus: Int, desc: String, name: String){
+  init(attackBonus: Int?, desc: String, name: String){
     self.attackBonus = attackBonus
     self.desc = desc
     self.name = name

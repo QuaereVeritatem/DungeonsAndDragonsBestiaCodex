@@ -24,15 +24,18 @@ struct MonsterResultsModel:Codable {
 }
 
 struct Results: Codable {
+  let index: String
   let name: String
   let url: String
   
-  init(name: String, url: String){
+  init(index: String, name: String, url: String){
+    self.index = index
     self.name = name
     self.url = url
   }
   
   enum CodingKeys: String, CodingKey {
+    case index = "index"
     case name = "name"
     case url = "url"
   }

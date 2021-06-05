@@ -29,6 +29,9 @@ class MonsterDetailViewController: UIViewController {
   var monsterCount: Int?
   var monsters: [MonsterModel] = [MonsterModel]()
   var monster: MonsterModel?
+  var canSwim: String = ""
+  var canWalk: String = ""
+  
   // this is for action names
   var titleFont = UIFont.systemFont(ofSize:18)
   // this is for action descritpion
@@ -39,7 +42,7 @@ class MonsterDetailViewController: UIViewController {
       monster = monsters.first
       // Do any additional setup after loading the view.
       monsterName.text! = monster!.name
-      indexNum.text! = String(monster!.index)
+      indexNum.text! = String(monster!.alignment)
       
       switch monster!.type {
       case "aberration": monsterAvatar.image! = UIImage(named: "Aberration")!
@@ -60,8 +63,21 @@ class MonsterDetailViewController: UIViewController {
         default: monsterAvatar.image! = UIImage(named: "WolfIcon")!
       }
       let spaces = "          "
+      
+      // safely get swim and/or walk
+      if let possSwim = monster!.speed?.swim {
+        canSwim = "Swim:  " + possSwim
+      } else {
+        canSwim = "Swim:  Cant Swim(N/A)"
+      }
+      if let possWalk = monster!.speed?.walk {
+        canWalk = "Walk:  " + possWalk
+      } else {
+        canWalk = "Walk:  Too Slow(N/A)"
+      }
+      
       // index 1 aboleth crashes here
-      let attributes: String = "\(monster!.type)" + spaces + spaces + "\(monster!.size)  \r" + "Speed: \(monster!.speed)" + "\r" + "Alignment:  \(monster!.alignment) " + "       " + "Armor Class: \(monster!.armorClass) \r" + "Hit Points: \(monster!.hitPoints)         " + "      Challenge Rating: \(monster!.challengeRating) \r \r" + "Strength: \(monster!.strength)" + spaces + "Dex: \(monster!.dexterity)" + spaces + "Const: \(monster!.constitution) \r" + "Int: \(monster!.intelligence)" + spaces + "Wis: \(monster!.wisdom)" + spaces
+      let attributes: String = "\(monster!.type)" + spaces + spaces + "\(monster!.size)  \r" + "[Speed] \(canSwim)" + "   " + "\(canWalk)" + "\r" + "Alignment:  \(monster!.alignment) " + "       " + "Armor Class: \(monster!.armorClass) \r" + "Hit Points: \(monster!.hitPoints)         " + "      Challenge Rating: \(monster!.challengeRating) \r \r" + "Strength: \(monster!.strength)" + spaces + "Dex: \(monster!.dexterity)" + spaces + "Const: \(monster!.constitution) \r" + "Int: \(monster!.intelligence)" + spaces + "Wis: \(monster!.wisdom)" + spaces
       // + "Cha: \(monster!.charisma) \r"
       attributesTextField.text! = attributes
       
